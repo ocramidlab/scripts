@@ -8,6 +8,7 @@
 #SBATCH --partition=bdw_all_serial
 #
 
+#SCRIPTSPATH='/marconi/home/userexternal/mbaldi00/SOURCE/python_scripts/'
 BASE='/marconi_scratch/userexternal/mbaldi00/PNG/B4000_1024_fNL+40/output/'
 BOX=4000.0
 GRID=1024
@@ -18,7 +19,7 @@ do
     
     echo $TARGET
     echo Copying python script to local
-    cp /marconi/home/userexternal/mbaldi00/SOURCE/python_scripts/quick_Pk.py $TARGET
+    cp ${SCRIPTSPATH}quick_Pk.py $TARGET
     echo Done
     echo Moving to $TARGET
     cd $TARGET
