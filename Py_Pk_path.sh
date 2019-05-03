@@ -1,27 +1,35 @@
 #!/bin/bash
+#Usage: Py_Pk_path.py output_Path Snapnum_min Snapnum_max BoxSize GridSize particle_types[numbers separated by comma]
+NUMPARAMS=6 # The number of expected parameters in the script
 
 #SCRIPTSPATH='/home/PERSONALE/marco.baldi5/SOURCE/python_scripts/'
-BASE='/marconi_scratch/userexternal/mbaldi00/PNG/B4000_1024_fNL+40/output/'
-BOX=4000.0
-GRID=1024
+#BASE='/marconi_scratch/userexternal/mbaldi00/PNG/B4000_1024_fNL+40/output/'
 
-for NUM in {0..7}
-do
-    TARGET=$BASE'snapdir_00'$NUM
-    
-    echo $TARGET
-    echo Copying python script to local
-    cp ${SCRIPTSPATH}quick_Pk.py $TARGET
-    echo Done
-    echo Moving to $TARGET
-    cd $TARGET
-    echo Done
-    SNAPNAME=$(ls -1 *.0)
-    echo we use this: ${SNAPNAME%.*} as snapshot argument
-    echo Running the python script
-    python quick_Pk.py ${SNAPNAME%.*} ${BOX} ${GRID}
-    echo Done
-    rm ./quick_Pk.py
-    
-    echo Power Spectrum Computed
-done
+if [ $# != $NUMPARAMS ]; then
+    echo "Usage: Py_Pk_path.py output_path Snapnum_min Snapnum_max BoxSize GridSize particle_types[numbers separated by comma]"
+    exit 0
+else
+    BASE=$1
+    for NUM in $(eval echo {$2..$3})
+    do
+	TARGET=$BASE'/snapdir_00'$NUM
+	echo ${TARGET}
+ 	if [ -d ${TARGET} ]; then
+	    echo $TARGET
+	    echo Copying python script to local
+	    cp ${SCRIPTSPATH}quick_Pk.py $TARGET
+	    echo Done
+	    echo Moving to $TARGET
+	    cd $TARGET
+	    echo Done
+	    SNAPNAME=$(ls -1 *.0)
+	    echo we use this: ${SNAPNAME%.*} as snapshot argument
+	    echo Running the python script
+	    python quick_Pk.py ${SNAPNAME%.*} $4 $5 $6
+	    echo Done
+	    rm ./quick_Pk.py
+	fi
+	    echo Power Spectrum Computed
+    done
+fi
+
