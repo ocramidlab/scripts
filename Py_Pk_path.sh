@@ -10,8 +10,9 @@ if [ $# != $NUMPARAMS ]; then
     exit 0
 else
     BASE=$1
-    for NUM in $(eval echo {$2..$3})
+    for SNAPNUM in $(eval echo {$2..$3})
     do
+	NUM=$(printf %03d $SNAPNUM)
 	TARGET=$BASE'/snapdir_00'$NUM
 	echo ${TARGET}
  	if [ -d ${TARGET} ]; then
