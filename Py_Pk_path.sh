@@ -13,8 +13,7 @@ else
     for SNAPNUM in $(eval echo {$2..$3})
     do
 	NUM=$(printf %03d $SNAPNUM)
-	TARGET=$BASE'/snapdir_00'$NUM
-	echo ${TARGET}
+	TARGET=$BASE'/snapdir_'$NUM
  	if [ -d ${TARGET} ]; then
 	    echo $TARGET
 	    echo Copying python script to local

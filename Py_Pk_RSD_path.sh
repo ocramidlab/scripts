@@ -10,24 +10,25 @@ if [ $# != $NUMPARAMS ]; then
     exit 0
 else
     BASE=$1
-    for NUM in $(eval echo {$2..$3})
-do
-    TARGET=$BASE'/snapdir_00'$NUM
-    if [ -d ${TARGET} ]; then
-	echo $TARGET
-	echo Copying python script to local
-	cp ${SCRIPTSPATH}quick_Pk_RSD.py $TARGET
-	echo Done
-	echo Moving to $TARGET
-	cd $TARGET
-	echo Done
-	SNAPNAME=$(ls -1 *.0)
-	echo we use this: ${SNAPNAME%.*} as snapshot argument
-	echo Running the python script
-	python quick_Pk_RSD.py ${SNAPNAME%.*} $4 $5 $6
-	echo Done
-	rm ./quick_Pk_RSD.py
-    fi	
-    echo Power Spectrum Computed
+    for SNAPNUM in $(eval echo {$2..$3})
+    do
+	NUM=$(printf %03d $SNAPNUM)
+	TARGET=$BASE'/snapdir_'$NUM
+	if [ -d ${TARGET} ]; then
+	    echo $TARGET
+	    echo Copying python script to local
+	    cp ${SCRIPTSPATH}quick_Pk_RSD.py $TARGET
+	    echo Done
+	    echo Moving to $TARGET
+	    cd $TARGET
+	    echo Done
+	    SNAPNAME=$(ls -1 *.0)
+	    echo we use this: ${SNAPNAME%.*} as snapshot argument
+	    echo Running the python script
+	    python quick_Pk_RSD.py ${SNAPNAME%.*} $4 $5 $6
+	    echo Done
+	    rm ./quick_Pk_RSD.py
+	fi	
+	echo Power Spectrum Computed
     done
 fi
